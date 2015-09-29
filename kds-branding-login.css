@@ -1,0 +1,68 @@
+
+
+/**********************************************
+*************  Login Page  ********************
+**********************************************/
+
+body.modal #modal-box.login-box {
+  background-image: none !important;
+  background-color: white;
+  border-radius: 25px;
+}
+
+body.modal.no-headers {
+  background-image: none !important;
+}
+
+/*resize the login box to your preference and change the color of 'stay signed in'*/
+body.modal #modal-box.login-box {
+  width: 623px;
+  height: 370px;
+  color: rgb(0,46,87);
+}
+/*hide "View Grades" button*/
+a.Button.button-sidebar-wide {
+  visibility: hidden;
+}
+/*hide "Forgot Password page"*/
+a#login_forgot_password {
+    visibility: hidden;
+}
+
+/*set this to the same width as your login-box above*/
+#unauthorized_holder #unauthorized_message {
+    width: 623px;
+}
+
+/*change the color of 'don't know your password' */
+body.modal #modal-box.login-box a { color: rgb(0,46,87) !important; }
+
+/*replace the Canvas logo with your own*/
+body.modal #modal-box.login-box h1 {
+  background: url("https://s3.amazonaws.com/SSL_Assets/kentdenver/images/Kent_Denver.png") no-repeat scroll 0 0 transparent;
+  background-size: 210px !important;
+  margin: 0;
+  height: 215px;
+  width: 100%;
+  background-position: 35px 0px;
+}
+
+/*change the color of the login button */
+body.modal #modal-box .button, body.modal #login-box .button, #login_form .btn-primary {
+  background-color: rgb(0,46,87) !important;
+  background-image: none;
+  border: none !important;
+}
+/*login button color on hover */
+body.modal #modal-box .button:hover, body.modal #login-box .button:hover, #login_form .btn-primary:hover {
+  background-color: rgb(168,5,51) !important;
+  background-image: none !important;
+  border: none !important;
+}
+
+/*Add Canvas Logo to login page*/
+body.modal #modal-box.login-box #modal-box-inner {
+  background: url("https://s3.amazonaws.com/SSL_Assets/kentdenver/images/canvas_logo_gray.png") no-repeat;
+  background-size: 250px;
+  background-position: 323px 80px;
+}
