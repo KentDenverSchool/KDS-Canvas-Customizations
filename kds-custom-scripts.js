@@ -48,6 +48,7 @@ onPage(/\/courses\/\d+\/settings$/, function() {
     var userData;
     $.getJSON('/api/v1/users/' + userId + '/custom_data?ns=org.kentdenver.canvas', function(data) {
         userData = data;
+    }).complete(function() {
         var tabs = $('#course_details_tabs');
         tabs.tabs('add', '#tab-tweaks', 'Kent Tweaks');
         $('#tab-tweaks').html(tweakHtml);
@@ -64,7 +65,9 @@ onPage(/\/courses\/\d+\/settings$/, function() {
                 $('#due_tweak_error').show();
             }
         });
-        var courseData = userData.data[courseId];
+        if(userData != undefined) {
+            var courseData = userData.data[courseId];
+        }
         var hourLoc = $('#due_hour');
         var minLoc = $('#due_minute');
         var periodLoc = $('#due_period');
