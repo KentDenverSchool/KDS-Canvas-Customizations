@@ -13,3 +13,10 @@ The test branch is deployed and running on our Canvas test instance while the ma
 - Section display for students who are in a course with several cross-listed sections
 - The ability to set due date default time for assignments and quizzes
   - These are controlled on the "Kent Tweaks" tab within Course Settings
+
+
+### Planned Features
+
+- Allow users to set the default point value for new assignments. If the default is set and the points field is changed to 0, update assignment submission type to "No submission"
+
+###### Feel free to submit any feature requests with a pull request or an issue
