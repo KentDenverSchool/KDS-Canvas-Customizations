@@ -1,5 +1,5 @@
 var tweakHtml = '' +
-    '<h2 style="margin-top: 10px;">Kent Tweaks</h2>' +
+    '<h2 style="margin-top: 10px;">KDS Features</h2>' +
     '<br>' +
     '<form>' +
       '<h3>Due Date Defaults</h3>' +
@@ -10,7 +10,7 @@ var tweakHtml = '' +
       '<option>am</option><option>pm</option></select>' +
       '</form>' +
       '<button id="tweaks_due_button"class="btn btn-primary">Update Preferences</button>' +
-     '<span id="due_tweak_error" style="color:red; display:none">   Please enter a time.</span>' 
+     '<span id="due_tweak_error" style="padding-left:10px; color:red; display:none">   Please enter a time.</span>' 
 
 /*
 function to display section number next to course title on all course pages
@@ -42,6 +42,10 @@ onPage(/\/$/, function() {
     });
 });
 
+/*
+Creates KDS Features Tab under course settings which adds a settings panel to control the following features:
+- Due date defaults
+*/
 onPage(/\/courses\/\d+\/settings$/, function() {
     var courseId = location.pathname.match(/\d+/)[0];
     var userId = ENV.current_user_id;
@@ -50,7 +54,7 @@ onPage(/\/courses\/\d+\/settings$/, function() {
         userData = data;
     }).complete(function() {
         var tabs = $('#course_details_tabs');
-        tabs.tabs('add', '#tab-tweaks', 'Kent Tweaks');
+        tabs.tabs('add', '#tab-tweaks', 'KDS Features');
         $('#tab-tweaks').html(tweakHtml);
         $('#tweaks_due_button').click(function() {
             hour = hourLoc.val();
@@ -60,9 +64,9 @@ onPage(/\/courses\/\d+\/settings$/, function() {
                 var data = {due_hour: hour, due_min: min, due_period: period};
                 userData.data[courseId] = data;
                 $.put('/api/v1/users/' + userId + '/custom_data', userData.data);
-                $('#due_tweak_error').hide(); 
+                $('#due_tweak_error').css('color', 'green').html('Success!').show(); 
             } else {
-                $('#due_tweak_error').show();
+                $('#due_tweak_error').css('color', 'red').html('Please enter a time.').show(); 
             }
         });
         if(userData != undefined) {
@@ -84,7 +88,9 @@ onPage(/\/courses\/\d+\/settings$/, function() {
         }
     });
 });
-
+/*
+Due date default implementation, pre fills due date time field with user's custom values
+*/
 onElementRendered('#bordered-wrapper > div > div:nth-child(2) > div:nth-child(1) > div > div > div.input-append > button', function(el) {
     var courseId = location.pathname.match(/\d+/)[0];
     var userId = ENV.current_user_id;
@@ -101,10 +107,16 @@ onElementRendered('#bordered-wrapper > div > div:nth-child(2) > div:nth-child(1)
     }); 
 });
 
+/*
+Limits functions to only run on pages that match the provided regex
+*/
 function onPage(regex, fn) {
   if (location.pathname.match(regex)) fn();
 }
 
+/*
+Waits for 30 seconds to see if an element is rendered
+*/
 function onElementRendered(selector, cb, _attempts) {
         var el = $(selector);
         _attempts = ++_attempts || 1;
@@ -114,7 +126,9 @@ function onElementRendered(selector, cb, _attempts) {
                 onElementRendered(selector, cb, _attempts);
         }, 250);
 }
-
+/*
+ Makes an HTTP PUT request designed for custom_data
+ */
 $.put = function(url, data) {
          return $.ajax({
                 url: url,

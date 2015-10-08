@@ -7,12 +7,12 @@ The test branch is deployed and running on our Canvas test instance while the ma
 #### Features implemented so far are:
 
 ##### Master
-- None
-
-##### Test
 - Section display for students who are in a course with several cross-listed sections
 - The ability to set due date default time for assignments and quizzes
-  - These are controlled on the "Kent Tweaks" tab within Course Settings
+  - These are controlled on the "KDS Features" tab within Course Settings
+
+##### Test
+- Same as master
 
 
 ### Planned Features
