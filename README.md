@@ -12,7 +12,8 @@ The test branch is deployed and running on our Canvas test instance while the ma
   - These are controlled on the "KDS Features" tab within Course Settings
 
 ##### Test
-- Same as master
+- Fixes the display of files that are embeded from Google Drive, but are not native to Google Docs
+    - Does this by switching the files to display in preview mode
 
 
 ### Planned Features
