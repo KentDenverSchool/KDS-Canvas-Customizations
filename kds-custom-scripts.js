@@ -71,6 +71,8 @@ onPage(/\/courses\/\d+\/settings$/, function() {
         });
         if(userData != undefined) {
             var courseData = userData.data[courseId];
+        } else {
+            userData = {data:{}}
         }
         var hourLoc = $('#due_hour');
         var minLoc = $('#due_minute');
