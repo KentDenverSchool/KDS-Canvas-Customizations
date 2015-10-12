@@ -21,7 +21,8 @@ onPage(/\/courses\/\d+/, function() {
       var sectionName = data.sections[0].name;
       var courseCrumb = $("#breadcrumbs ul li:eq(1) a span");
       var courseTitle = courseCrumb.html();
-      if(courseTitle != sectionName) {
+      var enrollment = data.enrollments[0].type;
+      if(courseTitle != sectionName && enrollment != "teacher") {
           courseCrumb.html(courseCrumb.html() + " (" + sectionName + ")");
       }
     });
@@ -37,7 +38,11 @@ onPage(/\/$/, function() {
         $.getJSON("/api/v1/courses/" + courseId + "?include[]=sections", function(data) {
                 var sectionName = data.sections[0].name;
                 var subtitle = curCard.find('.ic-DashboardCard__header-subtitle');
-                subtitle.html(sectionName);
+                var courseTitle = curCard.find('.ic-DashboardCard__header-title').html();
+                var enrollment = data.enrollments[0].type;
+                if(courseTitle != sectionName && enrollment != "teacher") {
+                    subtitle.html(sectionName);
+                }
         });
     });
 });
