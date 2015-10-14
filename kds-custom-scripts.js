@@ -128,6 +128,22 @@ onPage(/\/courses\/\d+\/modules\/items/, function() {
     }
 }); 
 /*
+Adds link to view crocodoc feedback in full tab
+*/
+onPage(/courses\/\d+\/assignments\/\d+\/submissions\/\d+/, function() {
+    $('#preview_frame').load(function() {
+        var iframe = $('#preview_frame');
+        if (iframe != undefined) { 
+                var container = iframe.contents().find('#content > div > div > div.col-xs-5.align-right');
+                console.log($(container.children()[0]));
+                var dest = $(container.children()[0]).attr('data-canvadoc_session_url');
+                console.log(dest);
+                var contHTML = container.html();
+                container.html('<p>' + contHTML +'&nbsp;&nbsp;<a href="' + dest  +'" target="_blank">View in New Tab</a></p>')
+            }
+    });
+});
+/*
 Limits functions to only run on pages that match the provided regex
 */
 function onPage(regex, fn) {
