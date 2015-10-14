@@ -14,6 +14,7 @@ The test branch is deployed and running on our Canvas test instance while the ma
 ##### Test
 - Fixes the display of files that are embeded from Google Drive, but are not native to Google Docs
     - Does this by switching the files to display in preview mode
+- Under the student submission view, add a link to the same submission that opens it in a new tab. This allows students to view feedback on the document more easily
 
 
 ### Planned Features
