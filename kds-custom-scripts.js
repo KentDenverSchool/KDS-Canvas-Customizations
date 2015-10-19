@@ -10,8 +10,25 @@ var tweakHtml = '' +
       '<option>am</option><option>pm</option></select>' +
       '</form>' +
       '<button id="tweaks_due_button"class="btn btn-primary">Update Preferences</button>' +
-     '<span id="due_tweak_error" style="padding-left:10px; color:red; display:none">   Please enter a time.</span>' 
+     '<span id="due_tweak_error" style="padding-left:10px; color:red; display:none">Please enter a time.</span>';
 
+var speedGraderHTML = '' + '<button id="other-score-update-button" type="submit"'+ 
+                    'class="btn btn-primary update-scores"' +
+                    ' style="width:150px" ' +
+                    '>Update Scores</button>';
+/*
+ * function to modify the apperance of speedgrader
+ *  - Adds Update Score button to the right side
+*/
+onPage(/\/courses\/\d+\/gradebook\/speed_grader/, function() {
+    var scoreBox = $('#grade_container');
+    scoreBox.append(speedGraderHTML);
+    $('#other-score-update-button').click(function() {
+        var sgFrame = $('#speedgrader_iframe');
+        var frameContents = sgFrame.contents();
+        var oldButton = frameContents.find('#speed_update_scores_container > div.update_scores > div > button').click();
+    });
+});
 /*
 function to display section number next to course title on all course pages
 */
