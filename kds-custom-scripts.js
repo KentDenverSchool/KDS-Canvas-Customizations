@@ -20,14 +20,18 @@ var speedGraderHTML = '' + '<button id="other-score-update-button" type="submit"
  * function to modify the apperance of speedgrader
  *  - Adds Update Score button to the right side
 */
-onPage(/\/courses\/\d+\/gradebook\/speed_grader/, function() {
-    var scoreBox = $('#grade_container');
-    scoreBox.append(speedGraderHTML);
-    $('#other-score-update-button').click(function() {
-        var sgFrame = $('#speedgrader_iframe');
-        var frameContents = sgFrame.contents();
-        var oldButton = frameContents.find('#speed_update_scores_container > div.update_scores > div > button').click();
-    });
+isUser(834, function(b) {
+    if(b) {
+        onPage(/\/courses\/\d+\/gradebook\/speed_grader/, function() {
+            var scoreBox = $('#grade_container');
+            scoreBox.append(speedGraderHTML);
+            $('#other-score-update-button').click(function() {
+                var sgFrame = $('#speedgrader_iframe');
+                var frameContents = sgFrame.contents();
+                var oldButton = frameContents.find('#speed_update_scores_container > div.update_scores > div > button').click();
+            });
+        });
+    }
 });
 /*
 function to display section number next to course title on all course pages
@@ -149,6 +153,12 @@ function onElementRendered(selector, cb, _attempts) {
         setTimeout(function() {
                 onElementRendered(selector, cb, _attempts);
         }, 250);
+}
+/*
+ * Function to only run code for certian users
+*/
+function isUser(id, cb) {
+          cb(ENV.current_user_id == id);
 }
 /*
  Makes an HTTP PUT request designed for custom_data
