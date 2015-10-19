@@ -10,25 +10,8 @@ var tweakHtml = '' +
       '<option>am</option><option>pm</option></select>' +
       '</form>' +
       '<button id="tweaks_due_button"class="btn btn-primary">Update Preferences</button>' +
-     '<span id="due_tweak_error" style="padding-left:10px; color:red; display:none">Please enter a time.</span>';
+     '<span id="due_tweak_error" style="padding-left:10px; color:red; display:none">   Please enter a time.</span>' 
 
-var speedGraderHTML = '' + '<button id="other-score-update-button" type="submit"'+ 
-                    'class="btn btn-primary update-scores"' +
-                    ' style="width:150px" ' +
-                    '>Update Scores</button>';
-/*
- * function to modify the apperance of speedgrader
- *  - Adds Update Score button to the right side
-*/
-onPage(/\/courses\/\d+\/gradebook\/speed_grader/, function() {
-    var scoreBox = $('#grade_container');
-    scoreBox.append(speedGraderHTML);
-    $('#other-score-update-button').click(function() {
-        var sgFrame = $('#speedgrader_iframe');
-        var frameContents = sgFrame.contents();
-        var oldButton = frameContents.find('#speed_update_scores_container > div.update_scores > div > button').click();
-    });
-});
 /*
 function to display section number next to course title on all course pages
 */
@@ -130,36 +113,7 @@ onElementRendered('#bordered-wrapper > div > div:nth-child(2) > div:nth-child(1)
         });
     }); 
 });
-/*
-Handles non-google-docs files being embeded from drive and displays them in preview mode to prevent
-rendering issues
-*/ 
-onPage(/\/courses\/\d+\/modules\/items/, function() {
-    var url = $('#file_content');
-    var url_src = url.attr('src');
-    if(url_src.indexOf('drive.google.com') >= 0) {
-        var str_arr = url_src.split("/");
-        str_arr.pop();
-        var new_url = str_arr.join('/') + "/preview";
-        url.attr('src', new_url);
-    }
-}); 
-/*
-Adds link to view crocodoc feedback in full tab
-*/
-onPage(/courses\/\d+\/assignments\/\d+\/submissions\/\d+/, function() {
-    $('#preview_frame').load(function() {
-        var iframe = $('#preview_frame');
-        if (iframe != undefined) { 
-                var container = iframe.contents().find('#content > div > div > div.col-xs-5.align-right');
-                console.log($(container.children()[0]));
-                var dest = $(container.children()[0]).attr('data-canvadoc_session_url');
-                console.log(dest);
-                var contHTML = container.html();
-                container.html('<p>' + contHTML +'&nbsp;&nbsp;<a href="' + dest  +'" target="_blank">View in New Tab</a></p>')
-            }
-    });
-});
+
 /*
 Limits functions to only run on pages that match the provided regex
 */
