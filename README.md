@@ -17,7 +17,8 @@ The test branch is deployed and running on our Canvas test instance while the ma
 - Under the student submission view, add a link to the same submission that opens it in a new tab. This allows students to view feedback on the document more easily
 - Speedgrader tweaks:
  - Add a new "Update Scores" button to the right sidebar
-
+ - Add an "Update and Next" to update scores and go to the next student
+ - Add a "Fill Remaining" button to fill any unfill scores with full points
 
 ### Planned Features
 
