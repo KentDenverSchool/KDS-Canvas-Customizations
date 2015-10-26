@@ -9,12 +9,12 @@ The test branch is deployed and running on our Canvas test instance while the ma
 ##### Master
 - Section display for students who are in a course with several cross-listed sections
 - The ability to set due date default time for assignments and quizzes
-  - These are controlled on the "KDS Features" tab within Course Settings
+  - These are controlled on the "KDS Features" tab within Course Setting
+- Under the student submission view, add a link to the same submission that opens it in a new tab. This allows students to view feedback on the document more easily
 
 ##### Test
 - Fixes the display of files that are embeded from Google Drive, but are not native to Google Docs
     - Does this by switching the files to display in preview mode
-- Under the student submission view, add a link to the same submission that opens it in a new tab. This allows students to view feedback on the document more easily
 - Speedgrader tweaks:
  - Add a new "Update Scores" button to the right sidebar
  - Add an "Update and Next" to update scores and go to the next student

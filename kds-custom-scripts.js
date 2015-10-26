@@ -174,7 +174,20 @@ Limits functions to only run on pages that match the provided regex
 function onPage(regex, fn) {
   if (location.pathname.match(regex)) fn();
 }
-
+/*
+Adds link to view crocodoc feedback in full tab
+*/
+onPage(/courses\/\d+\/assignments\/\d+\/submissions\/\d+/, function() {
+    $('#preview_frame').load(function() {
+        var iframe = $('#preview_frame');
+        if (iframe != undefined) {
+                var container = iframe.contents().find('#content > div > div > div.col-xs-5.align-right');
+                var dest = $(container.children()[0]).attr('data-crocodoc_session_url');
+                var contHTML = container.html();
+                container.html('<p>' + contHTML +'&nbsp;&nbsp;<a href="' + dest  +'" target="_blank">View in New Tab</a></p>')
+            }
+    });
+});
 /*
 Waits for 30 seconds to see if an element is rendered
 */
