@@ -24,6 +24,13 @@ var tweakHtml = '' +
                       'class="btn btn-primary update-scores"' +
                       ' style="width:150px" ' +
                       '>Fill Remaining</button>';
+
+//disable high contrast styles option on user preferences
+onPage(/\/profile/, function() {
+    onElementRendered('#ff_toggle_high_contrast', function(el) {
+        el.attr('disabled', 'disabled');
+    });
+});
 /*
  * function to modify the apperance of speedgrader
  *  - Adds Update Score button to the right side

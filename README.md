@@ -11,6 +11,7 @@ The test branch is deployed and running on our Canvas test instance while the ma
 - The ability to set due date default time for assignments and quizzes
   - These are controlled on the "KDS Features" tab within Course Setting
 - Under the student submission view, add a link to the same submission that opens it in a new tab. This allows students to view feedback on the document more easily
+- Disable the ability to turn on high contrast styles
 
 ##### Test
 - Fixes the display of files that are embeded from Google Drive, but are not native to Google Docs
