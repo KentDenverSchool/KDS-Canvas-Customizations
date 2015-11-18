@@ -38,32 +38,61 @@ onPage(/\/profile/, function() {
 isUser(834, function(b) {
   if (b) {
     onPage(/\/courses\/\d+\/gradebook\/speed_grader/, function() {
-      var sgFrame = $('#speedgrader_iframe');
-      var frameContents = sgFrame.contents();
-      var scoreBox = $('#grade_container');
-      scoreBox.append(speedGraderHTML);
-      $('#other-score-update-button').click(function() {
-        var oldButton = frameContents.find('#speed_update_scores_container > div.update_scores > div > button').click();
-      });
-      $('#fill-remaining-scores-button').click(function() {
-        var boxes = $('#speedgrader_iframe').contents().find('#questions span.question_points_holder > div.user_points:visible');
-        boxes.each(function() {
-          var input = $(this).find('input');
-          var val = input.val();
-          var points = $(this).find('span').text().split("/ ")[1];
-          if (val == "") {
-            input.val(points);
-          }
-        });
-      });
-      $('#update-and-next-button').click(function() {
-        var next = $('#gradebook_header > form > div.left > a.next');
-        var submit = $('#speedgrader_iframe').contents().find('#speed_update_scores_container > div.update_scores > div > button');
-        submit.click();
-        setTimeout(function() {
-          next.click();
-        }, 500);
-      });
+        // if assignment is a quiz
+            oniFrameRendered('#speedgrader_iframe', function(sgFrame) {
+            var frameContents = sgFrame.contents();
+            function addShortcuts(event) {
+                if(event.which == 81) {
+                    event.stopPropagation();
+                    updateAction();
+                }
+                if(event.which == 87) {
+                    event.stopPropagation();
+                    updateAndNextAction();
+                }
+                if(event.which == 69) {
+                    event.stopPropagation();
+                    fillAction();
+                }
+            }
+                function updateAction() {
+                    frameContents.find('#speed_update_scores_container > div.update_scores > div > button').click();
+                }
+                function updateAndNextAction() {
+                    var next = $('#gradebook_header > form > div.left > a.next');
+                    var submit = $('#speedgrader_iframe').contents().find('#speed_update_scores_container > div.update_scores > div > button');
+                    submit.click();
+                    setTimeout(function() {
+                        next.click();
+                    }, 500);
+                }
+                function fillAction() {
+                    var boxes = $('#speedgrader_iframe').contents().find('#questions span.question_points_holder > div.user_points:visible');
+                        boxes.each(function() {
+                            var input = $(this).find('input');
+                            var val = input.val();
+                            var points = $(this).find('span').text().split("/ ")[1];
+                            if(val == "") {
+                                input.val(points);
+                            }
+                    });
+                }
+            $(document).unbind('keyup').keyup(function(event) {addShortcuts(event)});
+            frameContents.unbind('keyup').keyup(function(event) {addShortcuts(event)});
+            if(frameContents.find('#speed_update_scores_container').length != 0 && $('#other-score-update-button').length == 0 ) {
+                var scoreBox = $('#grade_container');
+                scoreBox.append(speedGraderHTML);
+                $('#other-score-update-button').click(function() {
+                    updateAction();
+                });
+                $('#fill-remaining-scores-button').click(function() {
+                    fillAction();
+                });
+                $('#update-and-next-button').click(function() {
+                    updateAndNextAction();
+                });
+            }
+            });
     });
   }
 });
