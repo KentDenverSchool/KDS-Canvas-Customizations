@@ -13,17 +13,17 @@ var tweakHtml = '' +
   '<span id="due_tweak_error" style="padding-left:10px; color:red; display:none">Please enter a time.</span>';
 
   var speedGraderHTML = '' + '<button id="other-score-update-button" type="submit"'+
-                      'class="btn btn-primary update-scores"' +
+                      'class="btn btn-primary btn-small"' +
                       ' style="width:150px" ' +
-                      '>Update Scores</button>'+
+                      '>Update Scores (Q)</button>'+
                       '&nbsp<button id="update-and-next-button" type="submit"'+
-                      'class="btn btn-primary update-scores"' +
+                      'class="btn btn-primary btn-small"' +
                       ' style="width:150px" ' +
-                      '>Update and Next</button>'+
+                      '>Update and Next (W)</button>'+
                       '&nbsp<button id="fill-remaining-scores-button" type="submit"'+
-                      'class="btn btn-primary update-scores"' +
+                      'class="btn btn-primary btn-small"' +
                       ' style="width:150px" ' +
-                      '>Fill Remaining</button>';
+                      '>Fill Remaining (E)</button>';
 
 //disable high contrast styles option on user preferences
 onPage(/\/profile/, function() {
@@ -39,7 +39,7 @@ isUser(834, function(b) {
   if (b) {
     onPage(/\/courses\/\d+\/gradebook\/speed_grader/, function() {
         // if assignment is a quiz
-            oniFrameRendered('#speedgrader_iframe', function(sgFrame) {
+        oniFrameRendered('#speedgrader_iframe', function(sgFrame) {
             var frameContents = sgFrame.contents();
             function addShortcuts(event) {
                 if(event.which == 81) {
@@ -55,7 +55,7 @@ isUser(834, function(b) {
                     fillAction();
                 }
             }
-                function updateAction() {
+              function updateAction() {
                     frameContents.find('#speed_update_scores_container > div.update_scores > div > button').click();
                 }
                 function updateAndNextAction() {
@@ -235,6 +235,22 @@ function onElementRendered(selector, cb, _attempts) {
   setTimeout(function() {
     onElementRendered(selector, cb, _attempts);
   }, 250);
+}
+/*
+ * Check if iFrame is rendered
+*/
+function oniFrameRendered(selector, cb, _attempts){
+    var targetFrame = $(selector);
+    _attempts = ++_attempts || 1;
+    if(targetFrame.contents()[0] != undefined && targetFrame.contents()[0].readyState == "complete") {
+        targetFrame.on('load', function(e) {
+            return cb(targetFrame);
+        });
+    }
+    if(_attempts == 60) return;
+    setTimeout(function() {
+        oniFrameRendered(selector, cb, _attempts);
+    }, 250);
 }
 /*
  * Function to only run code for certian users
