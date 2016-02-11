@@ -20,6 +20,8 @@ The test branch is deployed and running on our Canvas test instance while the ma
  - Add a new "Update Scores" button to the right sidebar
  - Add an "Update and Next" to update scores and go to the next student
  - Add a "Fill Remaining" button to fill any unfill scores with full points
+- Hide ToDo for students
+ - Being tested on a new beta group
 
 ### Planned Features
 
