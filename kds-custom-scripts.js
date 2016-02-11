@@ -46,12 +46,14 @@ isBetaUser(function(b) {
                  */
                 isStudent(function(b) {
                         if(b) {
-                                var dashboardTodo = $('#right-side > ul.to-do-list');
+                                onElementRendered('#right-side > ul.to-do-list', function(el) {
+                                       var dashboardTodo = el; 
                                 if(dashboardTodo.length > 0) {
                                         $('#right-side > h2').hide();
                                         dashboardTodo.hide();
                                         console.log("Hiding dash todo");
                                 }
+                                });
                                 var courseTodo = $('#course_show_secondary > ul.to-do-list');
                                 if(courseTodo.length > 0) {
                                         $('#course_show_secondary > h2').hide();
