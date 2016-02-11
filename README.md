@@ -12,6 +12,8 @@ The test branch is deployed and running on our Canvas test instance while the ma
   - These are controlled on the "KDS Features" tab within Course Setting
 - Under the student submission view, add a link to the same submission that opens it in a new tab. This allows students to view feedback on the document more easily
 - Disable the ability to turn on high contrast styles
+- Hide ToDo for students
+ - Being tested on a new beta group
 
 ##### Test
 - Fixes the display of files that are embeded from Google Drive, but are not native to Google Docs
@@ -20,8 +22,6 @@ The test branch is deployed and running on our Canvas test instance while the ma
  - Add a new "Update Scores" button to the right sidebar
  - Add an "Update and Next" to update scores and go to the next student
  - Add a "Fill Remaining" button to fill any unfill scores with full points
-- Hide ToDo for students
- - Being tested on a new beta group
 
 ### Planned Features
 
