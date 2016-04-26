@@ -1,5 +1,7 @@
-//Users are aclement, aimhoff, bsimmons, scohen, aoro, hlindsay, mlewis
-var betaUsers = [834, 12, 705, 572, 234, 227, 383];
+//Users are aclement, aimhoff, bsimmons, scohen, aoro, hlindsay, mlewis, tham, ahoff, jhuh, ...
+//cmarsh, wmattingly, emaxey, pramurthy, srubin, asaffold, rschaffer, ssveen, pwang, ewaters, jzhou
+//
+var betaUsers = [834, 12, 705, 572, 234, 227, 383, 639, 641, 644, 657, 658, 659, 664, 667, 979, 669, 674, 678, 679, 683];
 
 var tweakHtml = '' +
 '<h2 style="margin-top: 10px;">KDS Features</h2>' +
