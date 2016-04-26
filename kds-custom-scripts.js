@@ -49,12 +49,12 @@ isBetaUser(function(b) {
                 isStudent(function(b) {
                         if(b) {
                                 onElementRendered('#right-side > ul.to-do-list', function(el) {
-                                       var dashboardTodo = el; 
-                                if(dashboardTodo.length > 0) {
-                                        $('#right-side > h2').hide();
-                                        dashboardTodo.hide();
-                                        console.log("Hiding dash todo");
-                                }
+                                        var dashboardTodo = el; 
+                                        if(dashboardTodo.length > 0) {
+                                                $('#right-side > h2').hide();
+                                                dashboardTodo.hide();
+                                                console.log("Hiding dash todo");
+                                        }
                                 });
                                 var courseTodo = $('#course_show_secondary > ul.to-do-list');
                                 if(courseTodo.length > 0) {
@@ -149,12 +149,14 @@ isUser(834, function(b) {
 onPage(/\/courses\/\d+/, function() {
         var id = location.pathname.match(/\d+/)[0];
         $.getJSON("/api/v1/courses/" + id + "?include[]=sections", function(data) {
-                var sectionName = data.sections[0].name;
-                var courseCrumb = $("#breadcrumbs ul li:eq(1) a span");
-                var courseTitle = courseCrumb.html();
-                var enrollment = data.enrollments[0].type;
-                if (courseTitle != sectionName && enrollment != "teacher") {
-                        courseCrumb.html(courseCrumb.html() + " (" + sectionName + ")");
+                if(data.sections.length > 0) {
+                        var sectionName = data.sections[0].name;
+                        var courseCrumb = $("#breadcrumbs ul li:eq(1) a span");
+                        var courseTitle = courseCrumb.html();
+                        var enrollment = data.enrollments[0].type;
+                        if (courseTitle != sectionName && enrollment != "teacher") {
+                                courseCrumb.html(courseCrumb.html() + " (" + sectionName + ")");
+                        }
                 }
         });
 });
@@ -182,56 +184,56 @@ onPage(/\/$/, function() {
    Creates KDS Features Tab under course settings which adds a settings panel to control the following features:
    - Due date defaults
    */
-                                        onPage(/\/courses\/\d+\/settings$/, function() {
-                                                var courseId = location.pathname.match(/\d+/)[0];
-                                                var userId = ENV.current_user_id;
-                                                var userData;
-                                                $.getJSON('/api/v1/users/' + userId + '/custom_data?ns=org.kentdenver.canvas', function(data) {
-                                                        userData = data;
-                                                }).complete(function() {
-                                                        var tabs = $('#course_details_tabs');
-                                                        tabs.tabs('add', '#tab-tweaks', 'KDS Features');
-                                                        $('#tab-tweaks').html(tweakHtml);
-                                                        $('#tweaks_due_button').click(function() {
-                                                                hour = hourLoc.val();
-                                                                min = minLoc.val();
-                                                                period = periodLoc.val();
-                                                                if (hour && min && period) {
-                                                                        var data = {
-                                                                                due_hour: hour,
-                                                                                due_min: min,
-                                                                                due_period: period
-                                                                        };
-                                                                        userData.data[courseId] = data;
-                                                                        $.put('/api/v1/users/' + userId + '/custom_data', userData.data);
-                                                                        $('#due_tweak_error').css('color', 'green').html('Success!').show();
-                                                                } else {
-                                                                        $('#due_tweak_error').css('color', 'red').html('Please enter a time.').show();
-                                                                }
-                                                        });
-                                                        if (userData != undefined) {
-                                                                var courseData = userData.data[courseId];
-                                                        } else {
-                                                                userData = {
-                                                                        data: {}
-                                                                }
-                                                        }
-                                                        var hourLoc = $('#due_hour');
-                                                        var minLoc = $('#due_minute');
-                                                        var periodLoc = $('#due_period');
-                                                        var hour;
-                                                        var min;
-                                                        var period;
-                                                        if (courseData != undefined) {
-                                                                hour = courseData.due_hour;
-                                                                min = courseData.due_min;
-                                                                period = courseData.due_period;
-                                                                hourLoc.val(hour);
-                                                                minLoc.val(min);
-                                                                periodLoc.val(period);
-                                                        }
-                                                });
-                                        });
+onPage(/\/courses\/\d+\/settings$/, function() {
+        var courseId = location.pathname.match(/\d+/)[0];
+        var userId = ENV.current_user_id;
+        var userData;
+        $.getJSON('/api/v1/users/' + userId + '/custom_data?ns=org.kentdenver.canvas', function(data) {
+                userData = data;
+        }).complete(function() {
+                var tabs = $('#course_details_tabs');
+                tabs.tabs('add', '#tab-tweaks', 'KDS Features');
+                $('#tab-tweaks').html(tweakHtml);
+                $('#tweaks_due_button').click(function() {
+                        hour = hourLoc.val();
+                        min = minLoc.val();
+                        period = periodLoc.val();
+                        if (hour && min && period) {
+                                var data = {
+                                        due_hour: hour,
+                                        due_min: min,
+                                        due_period: period
+                                };
+                                userData.data[courseId] = data;
+                                $.put('/api/v1/users/' + userId + '/custom_data', userData.data);
+                                $('#due_tweak_error').css('color', 'green').html('Success!').show();
+                        } else {
+                                $('#due_tweak_error').css('color', 'red').html('Please enter a time.').show();
+                        }
+                });
+                if (userData != undefined) {
+                        var courseData = userData.data[courseId];
+                } else {
+                        userData = {
+                                data: {}
+                        }
+                }
+                var hourLoc = $('#due_hour');
+                var minLoc = $('#due_minute');
+                var periodLoc = $('#due_period');
+                var hour;
+                var min;
+                var period;
+                if (courseData != undefined) {
+                        hour = courseData.due_hour;
+                        min = courseData.due_min;
+                        period = courseData.due_period;
+                        hourLoc.val(hour);
+                        minLoc.val(min);
+                        periodLoc.val(period);
+                }
+        });
+});
 /*
    Due date default implementation, pre fills due date time field with user's custom values
    */
@@ -264,24 +266,24 @@ onPage(/courses\/\d+\/assignments\/\d+\/submissions\/\d+/, function() {
         $('#preview_frame').load(function() {
                 var iframe = $('#preview_frame');
                 if (iframe != undefined) {
-                        var container = iframe.contents().find('#content > div > div > div.col-xs-5.align-right');
-                        var dest = $(container.children()[0]).attr('data-crocodoc_session_url');
+                        var container = iframe.contents().find('#content > div > div.file-upload-submission-attachment');
+                        var dest = $(container.children()[0]).attr('data-crocodoc_session_url'); //live version
                         var contHTML = container.html();
                         container.html('<p>' + contHTML + '&nbsp;&nbsp;<a href="' + dest + '" target="_blank">View in New Tab</a></p>')
                 }
         });
 });
-/*
-   Waits for 30 seconds to see if an element is rendered
-   */
-                                                        function onElementRendered(selector, cb, _attempts) {
-                                                                var el = $(selector);
-                                                                _attempts = ++_attempts || 1;
-                                                                if (el.length) return cb(el);
-                                                                if (_attempts == 60) return;
-                                                                setTimeout(function() {
-                                                                        onElementRendered(selector, cb, _attempts);
-    }, 250);
+        /*
+           Waits for 30 seconds to see if an element is rendered
+           */
+function onElementRendered(selector, cb, _attempts) {
+        var el = $(selector);
+        _attempts = ++_attempts || 1;
+        if (el.length) return cb(el);
+        if (_attempts == 60) return;
+        setTimeout(function() {
+                onElementRendered(selector, cb, _attempts);
+        }, 250);
 }
 /*
  * Check if iFrame is rendered
@@ -326,14 +328,14 @@ function isBetaUser(cb) {
 /*
    Makes an HTTP PUT request designed for custom_data
    */
-                                        $.put = function(url, data) {
-                                                return $.ajax({
-                                                        url: url,
-                                                        type: "PUT",
-                                                        dataType: 'json',
-                                                        data: {
-                                                                ns: 'org.kentdenver.canvas',
-                                                                data
-                                                        }
-                                                });
-                                        };
+$.put = function(url, data) {
+        return $.ajax({
+                url: url,
+                type: "PUT",
+                dataType: 'json',
+                data: {
+                        ns: 'org.kentdenver.canvas',
+                        data
+                }
+        });
+};
