@@ -28,6 +28,10 @@ a.Button.button-sidebar-wide {
 a#login_forgot_password {
     visibility: hidden;
 }
+/*hide assignments on syllabus page*/
+#syllabus {
+    visibility: hidden;
+}
 
 /*set this to the same width as your login-box above*/
 #unauthorized_holder #unauthorized_message {
