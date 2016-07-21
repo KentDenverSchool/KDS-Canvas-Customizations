@@ -49,7 +49,7 @@ isBetaUser(function(b) {
                 isStudent(function(b) {
                         if(b) {
                                 onElementRendered('#right-side > ul.to-do-list', function(el) {
-                                        var dashboardTodo = el; 
+                                        var dashboardTodo = el;
                                         if(dashboardTodo.length > 0) {
                                                 $('#right-side > h2').hide();
                                                 dashboardTodo.hide();
@@ -62,7 +62,7 @@ isBetaUser(function(b) {
                                         courseTodo.hide();
                                         console.log("Hiding course todo");
                                 }
-                        }    
+                        }
                 });
         }
 
@@ -70,79 +70,6 @@ isBetaUser(function(b) {
 });
 /*******************************************
 
-/*
- * function to modify the apperance of speedgrader
- *  - Adds Update Score button to the right side
- */
-isUser(834, function(b) {
-        if (b) {
-                onPage(/\/courses\/\d+\/gradebook\/speed_grader/, function() {
-                        // if assignment is a quiz
-                        oniFrameRendered('#speedgrader_iframe', function(sgFrame) {
-                                var frameContents = sgFrame.contents();
-
-                                function addShortcuts(event) {
-                                        if (event.which == 81) {
-                                                event.stopPropagation();
-                                                updateAction();
-                                        }
-                                        if (event.which == 87) {
-                                                event.stopPropagation();
-                                                updateAndNextAction();
-                                        }
-                                        if (event.which == 69) {
-                                                event.stopPropagation();
-                                                fillAction();
-                                        }
-                                }
-
-                                function updateAction() {
-                                        frameContents.find('#speed_update_scores_container > div.update_scores > div > button').click();
-                                }
-
-                                function updateAndNextAction() {
-                                        var next = $('#gradebook_header > form > div.left > a.next');
-                                        var submit = $('#speedgrader_iframe').contents().find('#speed_update_scores_container > div.update_scores > div > button');
-                                        submit.click();
-                                        setTimeout(function() {
-                                                next.click();
-                                        }, 500);
-                                }
-
-                                function fillAction() {
-                                        var boxes = $('#speedgrader_iframe').contents().find('#questions span.question_points_holder > div.user_points:visible');
-                                        boxes.each(function() {
-                                                var input = $(this).find('input');
-                                                var val = input.val();
-                                                var points = $(this).find('span').text().split("/ ")[1];
-                                                if (val == "") {
-                                                        input.val(points);
-                                                }
-                                        });
-                                }
-                                $(document).unbind('keyup').keyup(function(event) {
-                                        addShortcuts(event)
-                                });
-                                frameContents.unbind('keyup').keyup(function(event) {
-                                        addShortcuts(event)
-                                });
-                                if (frameContents.find('#speed_update_scores_container').length != 0 && $('#other-score-update-button').length == 0) {
-                                        var scoreBox = $('#grade_container');
-                                        scoreBox.append(speedGraderHTML);
-                                        $('#other-score-update-button').click(function() {
-                                                updateAction();
-                                        });
-                                        $('#fill-remaining-scores-button').click(function() {
-                                                fillAction();
-                                        });
-                                        $('#update-and-next-button').click(function() {
-                                                updateAndNextAction();
-                                        });
-                                }
-                        });
-                });
-        }
-});
 /*
    function to display section number next to course title on all course pages
    */
@@ -339,3 +266,74 @@ $.put = function(url, data) {
                 }
         });
 };
+
+/*
+ * Canvabadges required javascript
+ */
+
+ $(function() {
+   console.log("CANVABADGES: Loaded!");
+   // NOTE: if pasting this code into another script, you'll need to manually change the
+   // next line. Instead of assigning the value null, you need to assign the value of
+   // the Canvabadges domain, i.e. "https://www.canvabadges.org". If you have a custom
+   // domain configured then it'll be something like "https://www.canvabadges.org/_my_site"
+   // instead.
+   var protocol_and_host = "https://www.canvabadges.org";
+   if(!protocol_and_host) {
+     var $scripts = $("script");
+     $("script").each(function() {
+       var src = $(this).attr('src');
+       if(src && src.match(/canvas_profile_badges/)) {
+         var splits = src.split(/\//);
+         protocol_and_host = splits[0] + "//" + splits[2];
+       }
+       var prefix = src && src.match(/\?path_prefix=\/(\w+)/);
+       if(prefix && prefix[1]) {
+         protocol_and_host = protocol_and_host + "/" + prefix[1];
+       }
+     });
+   }
+   if(!protocol_and_host) {
+     console.log("CANVABADGES: Couldn't find a valid protocol and host. Canvabadges will not appear on profile pages until this is fixed.");
+   }
+   var match = location.href.match(/\/(users|about)\/(\d+)$/);
+   if(match && protocol_and_host) {
+     console.log("CANVABADGES: This page shows badges! Loading...");
+     var user_id = match[2];
+     var domain = location.host;
+     var url = protocol_and_host + "/api/v1/badges/public/" + user_id + "/" + encodeURIComponent(domain) + ".json";
+     $.ajax({
+       type: 'GET',
+       dataType: 'jsonp',
+       url: url,
+       success: function(data) {
+         console.log("CANVABADGES: Data retrieved!");
+         if(data.objects && data.objects.length > 0) {
+           console.log("CANVABADGES: Badges found! Adding to the page...");
+           var $box = $("<div/>", {style: 'margin-bottom: 20px;'});
+           $box.append("<h2 class='border border-b'>Badges</h2>");
+           for(idx in data.objects) {
+             var badge = data.objects[idx];
+             var $badge = $("<div/>", {style: 'float: left;'});
+             var link = protocol_and_host + "/badges/criteria/" + badge.config_id + "/" + badge.config_nonce + "?user=" + badge.nonce;
+             var $a = $("<a/>", {href: link});
+             $a.append($("<img/>", {src: badge.image_url, style: 'width: 72px; height: 72px; padding-right: 10px;'}));
+             $badge.append($a);
+             $box.append($badge);
+           }
+           $box.append($("<div/>", {style: 'clear: left'}));
+           $("#edit_profile_form,fieldset#courses,.more_user_information + div").after($box);
+         } else {
+           console.log("CANVABADGES: No badges found for the user: " + user_id + " at " + domain);
+         }
+       },
+       error: function(err) {
+         console.log("CANVABADGES: Badges failed to load, API error response");
+         console.log(err);
+       },
+       timeout: 5000
+     });
+   } else {
+     console.log("CANVABADGES: This page doesn't show badges");
+   }
+ });
