@@ -32,6 +32,9 @@ a#login_forgot_password {
 #syllabus {
     visibility: hidden;
 }
+#content > h2 {
+  visibility: hidden;
+}
 
 /*set this to the same width as your login-box above*/
 #unauthorized_holder #unauthorized_message {

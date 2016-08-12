@@ -43,33 +43,34 @@ onPage(/\/profile/, function() {
 isBetaUser(function(b) {
 
         if(b) {
-                /*
-                 * disables the to-do list for students, showing only "Coming Up"
-                 */
-                isStudent(function(b) {
-                        if(b) {
-                                onElementRendered('#right-side > ul.to-do-list', function(el) {
-                                        var dashboardTodo = el;
-                                        if(dashboardTodo.length > 0) {
-                                                $('#right-side > h2').hide();
-                                                dashboardTodo.hide();
-                                                console.log("Hiding dash todo");
-                                        }
-                                });
-                                var courseTodo = $('#course_show_secondary > ul.to-do-list');
-                                if(courseTodo.length > 0) {
-                                        $('#course_show_secondary > h2').hide();
-                                        courseTodo.hide();
-                                        console.log("Hiding course todo");
-                                }
-                        }
-                });
+
         }
 
 
 });
-/*******************************************
+/*******************************************/
 
+/*
+ * disables the to-do list for students, showing only "Coming Up"
+ */
+isStudent(function(b) {
+        if(b) {
+                onElementRendered('#right-side > ul.to-do-list', function(el) {
+                        var dashboardTodo = el;
+                        if(dashboardTodo.length > 0) {
+                                $('#right-side > h2').hide();
+                                dashboardTodo.hide();
+                                console.log("Hiding dash todo");
+                        }
+                });
+                var courseTodo = $('#course_show_secondary > ul.to-do-list');
+                if(courseTodo.length > 0) {
+                        $('#course_show_secondary > h2').hide();
+                        courseTodo.hide();
+                        console.log("Hiding course todo");
+                }
+        }
+});
 /*
    function to display section number next to course title on all course pages
    */
