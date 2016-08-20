@@ -208,12 +208,11 @@ onElementRendered('#bordered-wrapper > div > div:nth-child(2) > div:nth-child(1)
 /*
  * Show assignment list on the syllabus page
  */
-onPage(/courses\/\d+\/assignments\/syllabus/, function() {
+onElementRendered('#syllabus', function(el) {
         $.getJSON('/api/v1/users/' + userId + '/custom_data?ns=org.kentdenver.canvas', function(data) {
                 userData = data;
                 var courseId = location.pathname.match(/\d+/)[0];
                 var courseData = userData.data[courseId];
-                console.log(courseData);
                 if(courseData.syl_pref === 'true') {
                     $('#syllabus').addClass('kent-show');
                     $('#content > h2').addClass('kent-show');
