@@ -14,8 +14,17 @@ var tweakHtml = '' +
 '<select id="due_period" style="width:75px">' +
 '<option>am</option><option>pm</option></select>' +
 '</form>' +
-'<button id="tweaks_due_button"class="btn btn-primary">Update Preferences</button>' +
-'<span id="due_tweak_error" style="padding-left:10px; color:red; display:none">Please enter a time.</span>';
+'<button id="tweaks_due_button"class="btn btn-primary">Update Due Date</button>' +
+'<span id="due_tweak_error" style="padding-left:10px; color:red; display:none">Please enter a time.</span>' + 
+'<form>' +
+'<h3>Other Options</h3>' +
+'<div class="ic-Checkbox-group"> <div class="ic-Form-control ic-Form-control--checkbox">' + 
+'<input type="checkbox" id="syl-assignments">' +
+'<label class="ic-Label" for="syl-assignments">Show assignments on syllabus page</label>' + 
+'</div></div>' +
+'</form>' +
+'<button id="tweaks_other_button"class="btn btn-primary">Update Preferences</button>' +
+'<span id="other_tweak_error" style="padding-left:10px; color:red; display:none">Please enter a time.</span>';
 
 var speedGraderHTML = '' + '<button id="other-score-update-button" type="submit"' +
 'class="btn btn-primary btn-small"' +
@@ -110,7 +119,8 @@ onPage(/\/$/, function() {
 
 /*
    Creates KDS Features Tab under course settings which adds a settings panel to control the following features:
-   - Due date defaults
+    - Due date defaults
+    - Ability to show assignments on the syllabus
    */
 onPage(/\/courses\/\d+\/settings$/, function() {
         var courseId = location.pathname.match(/\d+/)[0];
@@ -123,20 +133,32 @@ onPage(/\/courses\/\d+\/settings$/, function() {
                 tabs.tabs('add', '#tab-tweaks', 'KDS Features');
                 $('#tab-tweaks').html(tweakHtml);
                 $('#tweaks_due_button').click(function() {
+                        if(userData.data[courseId] == undefined) {
+                                userData.data[courseId] = {};
+                        }
                         hour = hourLoc.val();
                         min = minLoc.val();
                         period = periodLoc.val();
+                        console.log(userData);
                         if (hour && min && period) {
-                                var data = {
-                                        due_hour: hour,
-                                        due_min: min,
-                                        due_period: period
-                                };
-                                userData.data[courseId] = data;
+                                userData.data[courseId]['due_hour'] = hour;
+                                userData.data[courseId]['due_min'] = min;
+                                userData.data[courseId]['due_period'] = period;
                                 $.put('/api/v1/users/' + userId + '/custom_data', userData.data);
                                 $('#due_tweak_error').css('color', 'green').html('Success!').show();
                         } else {
                                 $('#due_tweak_error').css('color', 'red').html('Please enter a time.').show();
+                        }
+                });
+                $('#tweaks_other_button').click(function() {
+                        if(userData.data[courseId] == undefined) {
+                                userData.data[courseId] = {};
+                        }
+                        sylPref = sylLoc.prop('checked');
+                        if(sylPref != undefined) {
+                                userData.data[courseId]['syl_pref'] = sylPref;
+                                $.put('/api/v1/users/' + userId + '/custom_data', userData.data);
+                                $('#other_tweak_error').css('color', 'green').html('Success!').show();
                         }
                 });
                 if (userData != undefined) {
@@ -149,16 +171,20 @@ onPage(/\/courses\/\d+\/settings$/, function() {
                 var hourLoc = $('#due_hour');
                 var minLoc = $('#due_minute');
                 var periodLoc = $('#due_period');
+                var sylLoc = $('#syl-assignments');
                 var hour;
                 var min;
                 var period;
+                var sylPref;
                 if (courseData != undefined) {
                         hour = courseData.due_hour;
                         min = courseData.due_min;
                         period = courseData.due_period;
+                        sylPref = courseData.syl_pref;
                         hourLoc.val(hour);
                         minLoc.val(min);
                         periodLoc.val(period);
+                        sylLoc.prop('checked', sylPref === 'true');
                 }
         });
 });
@@ -172,7 +198,6 @@ onElementRendered('#bordered-wrapper > div > div:nth-child(2) > div:nth-child(1)
         $.getJSON('/api/v1/users/' + userId + '/custom_data?ns=org.kentdenver.canvas', function(data) {
                 userData = data;
                 var courseData = userData.data[courseId];
-                console.log(courseData);
                 el.click(function() {
                         $('#ui-datepicker-time-hour').val(courseData.due_hour);
                         $('#ui-datepicker-div > div.ui-datepicker-time.ui-corner-bottom > input.ui-datepicker-time-minute').val(courseData.due_min);
@@ -180,6 +205,22 @@ onElementRendered('#bordered-wrapper > div > div:nth-child(2) > div:nth-child(1)
                 });
         });
 });
+/*
+ * Show assignment list on the syllabus page
+ */
+onPage(/courses\/\d+\/assignments\/syllabus/, function() {
+        $.getJSON('/api/v1/users/' + userId + '/custom_data?ns=org.kentdenver.canvas', function(data) {
+                userData = data;
+                var courseId = location.pathname.match(/\d+/)[0];
+                var courseData = userData.data[courseId];
+                console.log(courseData);
+                if(courseData.syl_pref === 'true') {
+                    $('#syllabus').addClass('kent-show');
+                    $('#content > h2').addClass('kent-show');
+                }
+        });
+});
+
 
 /*
    Limits functions to only run on pages that match the provided regex

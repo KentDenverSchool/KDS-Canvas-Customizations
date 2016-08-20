@@ -35,6 +35,12 @@ a#login_forgot_password {
 #content > h2 {
   visibility: hidden;
 }
+#syllabus.kent-show {
+    visibility: visible;
+}
+#content > h2.kent-show {
+    visibility: visible;
+}
 
 /*set this to the same width as your login-box above*/
 #unauthorized_holder #unauthorized_message {
