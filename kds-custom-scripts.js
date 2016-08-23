@@ -191,7 +191,9 @@ onPage(/\/courses\/\d+\/settings$/, function() {
 /*
    Due date default implementation, pre fills due date time field with user's custom values
    */
-onElementRendered('#bordered-wrapper > div > div:nth-child(2) > div:nth-child(1) > div > div > div.input-append > button', function(el) {
+onElementRendered('#bordered-wrapper > div > div > div:nth-child(1) > div > div > div.input-append > button', datePopout);
+
+function datePopout(el) {
         var courseId = location.pathname.match(/\d+/)[0];
         var userId = ENV.current_user_id;
         var userData;
@@ -203,8 +205,13 @@ onElementRendered('#bordered-wrapper > div > div:nth-child(2) > div:nth-child(1)
                         $('#ui-datepicker-div > div.ui-datepicker-time.ui-corner-bottom > input.ui-datepicker-time-minute').val(courseData.due_min);
                         $('#ui-datepicker-div > div.ui-datepicker-time.ui-corner-bottom > select').val(courseData.due_period);
                 });
-        });
-});
+                $('#add_due_date').click(function() {
+                    setTimeout(function() {
+                    onElementRendered('#bordered-wrapper > div > div > div:nth-child(1) > div > div > div.input-append > button', datePopout); 
+                    }, 250);
+                });
+       });
+}
 /*
  * Show assignment list on the syllabus page
  */
