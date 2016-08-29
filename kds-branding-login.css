@@ -21,9 +21,10 @@ body.modal #modal-box.login-box {
   color: rgb(0,46,87);
 }
 /*hide "View Grades" button*/
-a.Button.button-sidebar-wide {
+a[href="/grades"].Button.button-sidebar-wide {
   visibility: hidden;
 }
+
 /*hide "Forgot Password page"*/
 a#login_forgot_password {
     visibility: hidden;
