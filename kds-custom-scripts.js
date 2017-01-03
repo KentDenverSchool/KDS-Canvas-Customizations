@@ -191,7 +191,7 @@ onPage(/\/courses\/\d+\/settings$/, function() {
 /*
    Due date default implementation, pre fills due date time field with user's custom values
    */
-onElementRendered('#bordered-wrapper > div > div > div:nth-child(1) > div > div > div.input-append > button', datePopout);
+onElementRendered('#bordered-wrapper > div > div:nth-child(2) > div:nth-child(1) > div > div > div > div.input-append > button', datePopout);
 
 function datePopout(el) {
         var courseId = location.pathname.match(/\d+/)[0];
@@ -207,7 +207,7 @@ function datePopout(el) {
                 });
                 $('#add_due_date').click(function() {
                     setTimeout(function() {
-                    onElementRendered('#bordered-wrapper > div > div > div:nth-child(1) > div > div > div.input-append > button', datePopout); 
+                    onElementRendered('#bordered-wrapper > div > div:nth-child(2) > div:nth-child(1) > div > div > div > div.input-append > button', datePopout); 
                     }, 250);
                 });
        });
