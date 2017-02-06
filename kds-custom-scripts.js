@@ -390,6 +390,12 @@ $.put = function(url, data) {
     }
   });
 };
+/* Evaluation Kit JS*/
+
+var evalkit_jshosted = document.createElement('script');
+evalkit_jshosted.setAttribute('type', 'text/javascript');
+evalkit_jshosted.setAttribute('src', 'https://kentdenver.evaluationkit.com/CanvasScripts/kentdenver.js?v=1');
+document.getElementsByTagName('head')[0].appendChild(evalkit_jshosted);
 
 /*
  * Canvabadges required javascript
