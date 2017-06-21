@@ -25,6 +25,20 @@ a[href="/grades"].Button.button-sidebar-wide {
   visibility: hidden;
 }
 
+.kds-grid-center {
+    grid-column: 2;
+}
+
+.kds-center {
+  display: flex;
+  justify-content: center;
+}
+
+.iframe-fill {
+    width: 100%;
+    height: 1000px;
+}
+
 /*hide "Forgot Password page"*/
 a#login_forgot_password {
     visibility: hidden;

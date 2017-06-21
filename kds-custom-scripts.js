@@ -273,15 +273,19 @@ function datePopout(el) {
 /*
  * Assignment type default implementation 
  */
-onElementRendered('#assignment_grading_type', function(el) {
-  var courseId = location.pathname.match(/\d+/)[0];
-  var userId = ENV.current_user_id;
-  var userData;
-  $.getJSON('/api/v1/users/' + userId + '/custom_data?ns=org.kentdenver.canvas', function(data) {
-    userData = data;
-    var courseData = userData.data[courseId];
-    el.val(courseData.assign_type_pref);
-  });
+onPage(/courses\/\d+\/assignments\/new/, function() { 
+    onElementRendered('#assignment_grading_type', function(el) {
+        var courseId = location.pathname.match(/\d+/)[0];
+        var userId = ENV.current_user_id;
+        var userData;
+        $.getJSON('/api/v1/users/' + userId + '/custom_data?ns=org.kentdenver.canvas', function(data) {
+            userData = data;
+            var courseData = userData.data[courseId];
+            if(courseData && courseData.assign_type_pref) {
+                el.val(courseData.assign_type_pref);
+            }
+        });
+    });
 });
 /*
  * Show assignment list on the syllabus page
@@ -390,12 +394,11 @@ $.put = function(url, data) {
     }
   });
 };
-/* Evaluation Kit JS*/
+/* JQuery UI Wigetize */
 
-var evalkit_jshosted = document.createElement('script');
-evalkit_jshosted.setAttribute('type', 'text/javascript');
-evalkit_jshosted.setAttribute('src', 'https://kentdenver.evaluationkit.com/CanvasScripts/kentdenver.js?v=1');
-document.getElementsByTagName('head')[0].appendChild(evalkit_jshosted);
+!function(s,d,url,e,p){
+  e=d.createElement(s),p=d.getElementsByTagName(s)[0];e.async=1;e.src=url;p.parentNode.insertBefore(e,p)
+}('script', document, 'https://unpkg.com/widgetize-canvas-lms-user-content');
 
 /*
  * Canvabadges required javascript
