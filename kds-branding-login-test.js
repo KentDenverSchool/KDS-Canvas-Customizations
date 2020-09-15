@@ -1,2 +1,1 @@
-requirejs(["https://spark.kentdenver.org/resources/CanvasTest/kds-custom-scripts.js"], function(){
-});
+$.getScript('https://kdsweb.kentdenver.org/resources/CanvasTest/kds-custom-scripts.js');

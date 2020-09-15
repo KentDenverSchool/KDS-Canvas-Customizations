@@ -1,5 +1,5 @@
+@import 'https://kentdenver.evaluationkit.com/CanvasScripts/kentdenver.css?v=2';
 
-@import 'https://kentdenver.evaluationkit.com/CanvasScripts/kentdenver.css?v=1';
 /**********************************************
 *************  Login Page  ********************
 **********************************************/
@@ -20,9 +20,11 @@ body.modal #modal-box.login-box {
   height: 370px;
   color: rgb(0,46,87);
 }
-/*hide "View Grades" button*/
-a[href="/grades"].Button.button-sidebar-wide {
-  visibility: hidden;
+
+
+/* hide contents of Coming Up*/
+#right-side > div.events_list.coming_up > ul {
+  display: none;
 }
 
 .kds-grid-center {
