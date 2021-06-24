@@ -1,5 +1,3 @@
-@import 'https://kentdenver.evaluationkit.com/CanvasScripts/kentdenver.css?v=2';
-
 /**********************************************
 *************  Login Page  ********************
 **********************************************/
@@ -39,6 +37,11 @@ body.modal #modal-box.login-box {
 .iframe-fill {
     width: 100%;
     height: 1000px;
+}
+
+/*hide admin link*/
+#global_nav_accounts_link {
+  display: none;
 }
 
 /*hide "Forgot Password page"*/

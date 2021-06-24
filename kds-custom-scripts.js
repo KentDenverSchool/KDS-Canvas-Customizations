@@ -1,15 +1,3 @@
-/*EvaluationKIT START*/
-let evalkit_jshosted = document.createElement('script');
-evalkit_jshosted.setAttribute('type', 'text/javascript');
-evalkit_jshosted.setAttribute('src', 'https://kentdenver.evaluationkit.com/CanvasScripts/kentdenver.js?v=2');
-document.getElementsByTagName('head')[0].appendChild(evalkit_jshosted);
-/*EvaluationKIT END*/
-
-//Users are aclement, aimhoff, bsimmons, scohen, aoro, hlindsay, mlewis, tham, ahoff, jhuh, ...
-//cmarsh, wmattingly, emaxey, pramurthy, srubin, asaffold, rschaffer, ssveen, pwang, ewaters, jzhou
-
-const betaUsers = ["834", "1797"];
-
 const kdsApiUrl = "https://kdsapi.org/schedule";
 
 
@@ -103,6 +91,10 @@ function zoomLinkTemplate(sections) {
 
 }
 
+//show admin shortcut to account admins
+if(ENV && (ENV.current_user_types.indexOf("Account Admin") >= 0 || ENV.current_user_types.indexOf("Counselor") >= 0)) {
+    document.querySelector("#global_nav_accounts_link").style.display = "block";
+}
 
 
 //disable high contrast styles option on user preferences
@@ -112,39 +104,6 @@ onPage(/\/profile/, function () {
     });
 });
 
-/*
- ************ Beta Section *****************
- */
-isBetaUser(function (b) {
-
-    if (b) {
-        /*
-         * Tests related to advising and user observers
-         */
-        // onPage(/\/courses$/, function () {
-        //     let current_enrollments = document.querySelector("#my_courses_table").querySelectorAll("tr");
-        //     let past_enrollments = document.querySelector("#past_enrollments_table").querySelectorAll("tr");
-        //     for(let i = 0; i < current_enrollments.length; i++) {
-        //         let a = current_enrollments[i];
-        //         let type = a.querySelector(".course-list-enrolled-as-column").innerText;
-        //         if(type === "Observer") {
-        //             a.style.display = "none";
-        //         }
-        //     }
-        //     for(let i = 0; i < past_enrollments.length; i++) {
-        //         let a = past_enrollments[i];
-        //         let type = a.querySelector(".course-list-enrolled-as-column").innerText;
-        //         if(type === "Observer") {
-        //             a.style.display = "none";
-        //         }
-        //     }
-        // });
-
-    }
-
-
-});
-/*******************************************/
 
 /*
  * disables the to-do list for students, showing only "Coming Up"
@@ -206,10 +165,11 @@ onPage(/\/courses\/\d+/, function () {
             if (enrollment === "teacher" && location.pathname.match(/\/courses\/\d+$/)) {
                 const termText = document.getElementById("section-tabs-header-subtitle").innerText;
                 const term = termText.indexOf("KDS MS") >= 0 ? "MS" : "US";
+                //const term = "ONLINE";
                 let htmlToInsert = $('<div></div>');
                 let sectionPromises = [];
                 for (let sectionObj of data.sections) {
-                    let nameSplit = sectionObj.name.match(/.*([1-6])F.* - .* \(.*\)/);
+                    let nameSplit = sectionObj.name.match(/.*([1-6])[FYS].* - .* \(.*\)/);
                     if (nameSplit) {                    
                         let section = nameSplit[1];
                         let tomorrow = new Date();
@@ -233,24 +193,6 @@ onPage(/\/courses\/\d+/, function () {
 
             }
         }
-    });
-});
-/*
- function to display section number on dashboard
- */
-onPage(/\/$/, function () {
-    ENV.DASHBOARD_COURSES.forEach(function (e) {
-        $.getJSON("/api/v1/courses/" + e.id + "?include[]=sections", function (data) {
-            const curCard = $('.ic-DashboardCard[aria-label="' + e.originalName + '"]');
-            const sectionName = data.sections[0].name;
-            const subtitle = curCard.find('.ic-DashboardCard__header-subtitle');
-            const courseTitle = curCard.find('.ic-DashboardCard__header-title')
-                .html();
-            const enrollment = data.enrollments[0].type;
-            if (courseTitle !== sectionName && enrollment !== "teacher") {
-                subtitle.html(sectionName);
-            }
-        });
     });
 });
 
@@ -472,14 +414,15 @@ function datePopout(els) {
                 }
                 const sections = [];
                 for (let section of ENV.SECTION_LIST) {
-                    let nameSplit = section.name.match(/.*([1-6])F.* - .* \(.*\)/);
+                    let nameSplit = section.name.match(/.*([1-6])[FYS].* - .* \(.*\)/);
                     if (nameSplit) {
                         sections.push(nameSplit[1]);
                     }
                 }
                 const termText = document.getElementById("section-tabs-header-subtitle").innerText;
                 const term = termText.indexOf("KDS MS") >= 0 ? "MS" : "US";
-                if (term === "MS" || term === "US") {
+                //const term = "ONLINE";
+                if (term === "MS" || term === "US" || term === "ONLINE") {
                     let dropdownHtmlToInsert = $(upcomingDropdown);
                     let sectionPromises = [];
                     let today = new Date();
